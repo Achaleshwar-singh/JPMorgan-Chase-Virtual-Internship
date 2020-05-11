@@ -1,0 +1,139 @@
+From 19e44ae0aef1f8521db7642d0779c34402175026 Mon Sep 17 00:00:00 2001
+From: Achaleshwar Singh <achaleshwarsingh.1@gmail.com>
+Date: Sat, 2 May 2020 19:06:11 +0000
+Subject: [PATCH] Create Patch File
+
+---
+ 0001-Creat-Patch-File.patch | 120 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 120 insertions(+)
+ create mode 100644 0001-Creat-Patch-File.patch
+
+diff --git a/0001-Creat-Patch-File.patch b/0001-Creat-Patch-File.patch
+new file mode 100644
+index 0000000..5eba417
+--- /dev/null
++++ b/0001-Creat-Patch-File.patch
+@@ -0,0 +1,120 @@
++From c1d31cbf21f7a0a1b51d8b79d0996156bf4941d8 Mon Sep 17 00:00:00 2001
++From: Achaleshwar Singh <achaleshwarsingh.1@gmail.com>
++Date: Sat, 2 May 2020 19:00:54 +0000
++Subject: [PATCH] Creat Patch File
++
++---
++ 0001-Create-Patch-File.patch | 101 -----------------------------------
++ 1 file changed, 101 deletions(-)
++ delete mode 100644 0001-Create-Patch-File.patch
++
++diff --git a/0001-Create-Patch-File.patch b/0001-Create-Patch-File.patch
++deleted file mode 100644
++index 96df9e2..0000000
++--- a/0001-Create-Patch-File.patch
+++++ /dev/null
++@@ -1,101 +0,0 @@
++-From 1d50ffea3cc9d24a0eed82fc389ed854adcf29cf Mon Sep 17 00:00:00 2001
++-From: Achaleshwar Singh <achaleshwarsingh.1@gmail.com>
++-Date: Sat, 2 May 2020 18:43:21 +0000
++-Subject: [PATCH] Create Patch File
++-
++----
++- 0001-Create-Patch-File.patch | 82 ++++++++++++++++++++++++++++++++++++
++- 1 file changed, 82 insertions(+)
++- create mode 100644 0001-Create-Patch-File.patch
++-
++-diff --git a/0001-Create-Patch-File.patch b/0001-Create-Patch-File.patch
++-new file mode 100644
++-index 0000000..a934aea
++---- /dev/null
++-+++ b/0001-Create-Patch-File.patch
++-@@ -0,0 +1,82 @@
++-+From f688a112fe1c464171676c4dd81d439350349823 Mon Sep 17 00:00:00 2001
++-+From: Achaleshwar Singh <achaleshwarsingh.1@gmail.com>
++-+Date: Sat, 2 May 2020 18:38:40 +0000
++-+Subject: [PATCH] Create Patch File
++-+
++-+---
++-+ client.py      | 19 ++++++++++++-------
++-+ client_test.py |  9 ++++++++-
++-+ 2 files changed, 20 insertions(+), 8 deletions(-)
++-+
++-+diff --git a/client.py b/client.py
++-+index f90e270..12f8fab 100644
++-+--- a/client.py
++-++++ b/client.py
++-+@@ -15,14 +15,17 @@ def getDataPoint(quote):
++-+ 	stock = quote['stock']
++-+ 	bid_price = float(quote['top_bid']['price'])
++-+ 	ask_price = float(quote['top_ask']['price'])
++-+-	price = bid_price
++-++	price = (bid_price+ask_price) / 2
++-+ 	return stock, bid_price, ask_price, price
++-+ 
++-+ def getRatio(price_a, price_b):
++-+-	""" Get ratio of price_a and price_b """
++-+-	""" ------------- Update this function ------------- """
++-+-	""" Also create some unit tests for this function in client_test.py """
++-+-	return 1
++-++
++-++  if(price_b == 0 and price_a == 0):
++-++      return
++-++  elif(price_b == 0 or price_a == 0):
++-++      return
++-++  return price_a/price_b
++-++	
++-+ 
++-+ # Main
++-+ if __name__ == "__main__":
++-+@@ -32,8 +35,10 @@ if __name__ == "__main__":
++-+ 		quotes = json.loads(urllib2.urlopen(QUERY.format(random.random())).read())
++-+ 
++-+ 		""" ----------- Update to get the ratio --------------- """
++-++		prices = {}
++-+ 		for quote in quotes:
++-+ 			stock, bid_price, ask_price, price = getDataPoint(quote)
++-+-			print "Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price)
++-++			prices[stock] = price
++-++			print("Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price))
++-+ 
++-+-		print "Ratio %s" % getRatio(price, price)
++-++		print("Ratio %s" % getRatio(prices['ABC'], prices['DEF']))
++-+diff --git a/client_test.py b/client_test.py
++-+index a608a01..fad4f06 100644
++-+--- a/client_test.py
++-++++ b/client_test.py
++-+@@ -8,6 +8,8 @@ class ClientTest(unittest.TestCase):
++-+       {'top_ask': {'price': 121.68, 'size': 4}, 'timestamp': '2019-02-11 22:06:30.572453', 'top_bid': {'price': 117.87, 'size': 81}, 'id': '0.109974697771', 'stock': 'DEF'}
++-+     ]
++-+     """ ------------ Add the assertion below ------------ """
++-++    for quote in quotes:
++-++      self.assertEquals(getDataPoint(quote),(quote['stock'], quote['top_ask']['price'],(quote['top_bid']['price'] + quote['top_ask']['price'])/2))
++-+ 
++-+   def test_getDataPoint_calculatePriceBidGreaterThanAsk(self):
++-+     quotes = [
++-+@@ -15,9 +17,14 @@ class ClientTest(unittest.TestCase):
++-+       {'top_ask': {'price': 121.68, 'size': 4}, 'timestamp': '2019-02-11 22:06:30.572453', 'top_bid': {'price': 117.87, 'size': 81}, 'id': '0.109974697771', 'stock': 'DEF'}
++-+     ]
++-+     """ ------------ Add the assertion below ------------ """
++-+-
++-++    for quote in quotes:
++-++      self.assertEquals(getDataPoint(quote),(quote['stock'], quote['top_ask']['price'],(quote['top_bid']['price'] + quote['top_ask']['price'])/2))
++-+ 
++-+   """ ------------ Add more unit tests ------------ """
++-++  def test_checkRatio(self):
++-++    self.assertEqual(getRatio(0, 1), None)
++-++    self.assertEqual(getRatio(0, 0), None)
++-++    self.assertEqual(getRatio(1, 0), None)
++-+ 
++-+ 
++-+ 
++-+-- 
++-+2.20.1
++-+
++--- 
++-2.20.1
++-
++-- 
++2.20.1
++
+-- 
+2.20.1
+
